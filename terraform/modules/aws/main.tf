@@ -1,15 +1,19 @@
-data "archive_file" "lambda_zip" {                                                                                                                                                                                   
-  type        = "zip"                                                                                                                                                                                                
-  source_dir  = "../express-api/"                                                                                                                                                                                         
-  output_path = "../express-api/express-api.zip"                                                                                                                                                                         
-}                                                                                                                                                                                                                    
+provider "aws" {
+  region = var.aws_region
+}
+
+data "archive_file" "lambda_zip" {
+  type        = "zip"
+  source_dir  = "../express-api/"
+  output_path = "../express-api/express-api.zip"
+}
 
 resource "aws_lambda_function" "express_api" {
-  function_name = "express-api-lambda"
-  handler      = "app.handler"
-  runtime      = "nodejs14.x"
-  filename         = data.archive_file.lambda_zip.output_path                                                                                                                                                        
-  source_code_hash = data.archive_file.lambda_zip.output_base64sha256                                                                                                                                                
+  function_name    = var.aws_lambda_function_name
+  handler          = "app.handler"
+  runtime          = "nodejs14.x"
+  filename         = data.archive_file.lambda_zip.output_path
+  source_code_hash = data.archive_file.lambda_zip.output_base64sha256
 
   role = aws_iam_role.lambda_exec.arn
 
@@ -22,8 +26,13 @@ resource "aws_lambda_function" "express_api" {
   depends_on = [aws_iam_role_policy.lambda]
 }
 
+resource "random_pet" "component_name" {
+  length    = 2
+  separator = "-"
+}
+
 resource "aws_iam_role" "lambda_exec" {
-  name = "lambda-exec-role"
+  name = "lambda-exec-role-${random_pet.component_name.id}"
 
   assume_role_policy = <<EOF
 {
@@ -41,6 +50,7 @@ resource "aws_iam_role" "lambda_exec" {
 }
 EOF
 }
+
 
 resource "aws_iam_role_policy" "lambda" {
   name = "lambda-policy"
@@ -64,10 +74,9 @@ resource "aws_iam_role_policy" "lambda" {
 EOF
 }
 
-
 resource "aws_api_gateway_rest_api" "express_api" {
-  name        = "express-api"
-  description = "Express API"
+  name        = var.api_gateway_name
+  description = var.api_gateway_description
 }
 
 resource "aws_api_gateway_resource" "express_api_root" {
@@ -96,14 +105,14 @@ resource "aws_api_gateway_deployment" "express_api" {
   depends_on = [aws_api_gateway_integration.express_api]
 
   rest_api_id = aws_api_gateway_rest_api.express_api.id
-  stage_name  = "prod"  # or any other desired stage name
+  stage_name  = "prod"
 }
 
 resource "aws_route53_record" "express_api" {
-  zone_id = "Z069622921MYYVP9QMGLQ"  # Update with your Route 53 hosted zone ID
-  name    = "api-tf-datadog-poc.jmastio.com"  # Update with your desired domain/subdomain
+  zone_id = var.route53_zone_id
+  name    = var.domain_name
   type    = "CNAME"
 
   records = [aws_api_gateway_deployment.express_api.invoke_url]
-  ttl     = 300
+  ttl     = "300"
 }
