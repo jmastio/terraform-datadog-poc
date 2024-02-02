@@ -30,11 +30,6 @@ resource "aws_lambda_function" "express_api" {
   depends_on = [aws_iam_role_policy.lambda]
 }
 
-output "lambda_function_name" {
-  value = aws_lambda_function.express_api.function_name
-}
-
-
 resource "random_pet" "component_name" {
   length    = 2
   separator = "-"
