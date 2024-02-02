@@ -1,0 +1,5 @@
+aws_region              = "your_aws_region"
+route53_zone_id         = "your_route53_zone_id"
+domain_name             = "your_domain_name"
+lambda_gateway_name     = "your_lambda_gateway_name"
+api_gateway_description = "your_api_gateway_description"
