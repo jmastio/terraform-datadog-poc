@@ -22,3 +22,8 @@ variable "api_gateway_description" {
   description = "Description of the API Gateway"
   type        = string
 }
+
+variable "datadog_api_key" {
+  description = "Datadog API key"
+  type        = string
+}

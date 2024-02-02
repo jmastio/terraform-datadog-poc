@@ -8,3 +8,5 @@ Ensure you have the following installed:
 - Terraform
 - Node.js for Express API
 - Datadog account for API monitoring
+
+## Fill variables in tfvars

@@ -1,21 +1,3 @@
-terraform {
-  required_providers {
-    datadog = {
-      source = "DataDog/datadog"
-    }
-  }
-}
-
-provider "random" {
-  version = "~> 3.0"
-}
-
-# Configure the Datadog provider
-#provider "datadog" {
-#  api_key = var.datadog_api_key
-#  app_key = var.datadog_app_key
-#}
-
 module "aws_resources" {
   source                  = "./modules/aws"
   aws_region              = var.aws_region
@@ -29,8 +11,7 @@ module "aws_resources" {
   # route53_ttl             = var.route53_ttl
 }
 
-#module "datadog_resources" {
-#  source = "./modules/datadog"
-#  datadog_api_key = var.datadog_api_key
-#  datadog_app_key = var.datadog_app_key
-#}
+module "datadog_resources" {
+  source = "./modules/datadog"
+  datadog_api_key = var.datadog_api_key
+}
