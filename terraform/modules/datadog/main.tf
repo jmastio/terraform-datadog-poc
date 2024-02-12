@@ -11,6 +11,11 @@ provider "datadog" {
   app_key = var.datadog_app_key
 }
 
+resource "datadog_integration_aws" "sandbox_integration" {
+  account_id = var.aws_account_id
+  role_name   = "DatadogAWSIntegrationRole"
+}
+
 resource "datadog_monitor" "api_gateway_hits" {
   name             = "API Gateway Hits Monitor"
   type             = "metric alert"

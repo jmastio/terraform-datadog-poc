@@ -32,3 +32,8 @@ variable "datadog_app_key" {
   description = "Datadog app key"
   type        = string
 }
+
+variable "aws_account_id" {
+  description = "integrated account id"
+  type  = string
+}

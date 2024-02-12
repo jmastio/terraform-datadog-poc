@@ -15,6 +15,7 @@ module "datadog_resources" {
   source = "./modules/datadog"
   datadog_api_key = var.datadog_api_key
   datadog_app_key = var.datadog_app_key
+  aws_account_id = var.aws_account_id
   lambda_function_name = module.aws_resources.lambda_function_name
   ApiName = module.aws_resources.ApiName
 }

@@ -18,3 +18,8 @@ variable "ApiName" {
   description = "Produced lambda api gateway"
   type        = string
 }
+
+variable "aws_account_id" {
+  description = "integrated account id"
+  type  = string
+}
