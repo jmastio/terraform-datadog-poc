@@ -34,3 +34,16 @@ resource "datadog_monitor" "api_gateway_hits" {
 
   tags = ["api_gateway", "production"]
 }
+
+resource "datadog_service_level_objective" "api_gateway_slo" {
+  name              = "API Gateway SLO"
+  description       = "Service Level Objective for API Gateway"
+  type              = "monitor"
+  monitor_ids       = [datadog_monitor.api_gateway_hits.id]
+ thresholds {
+    timeframe = "7d"
+    target    = 99.9
+    warning   = 99.99
+  }
+  tags              = ["api_gateway", "production"]
+}
