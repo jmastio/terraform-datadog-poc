@@ -3,5 +3,5 @@ output "lambda_function_name" {
 }
 
 output "ApiName" {
-  value = aws_api_gateway_integration.express_api.rest_api_id
+  value = aws_apigatewayv2_integration.express_api.id
 }
