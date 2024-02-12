@@ -17,9 +17,7 @@ resource "datadog_monitor" "api_gateway_hits" {
   message          = "API Gateway is experiencing high traffic"
   escalation_message = "API Gateway still high after 15 minutes, escalating"
   
-  query = <<EOQ
-    sum:aws.apigateway.api_request.count{*} > 100
-  EOQ
+  query = "avg(last_15m):sum:aws.apigateway.api_request.count{*} > 100"
 
   evaluation_delay = 900 // 15 minutes
   timeout_h        = 1
