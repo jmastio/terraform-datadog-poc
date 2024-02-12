@@ -13,3 +13,8 @@ variable "lambda_function_name" {
   description = "Produced lambda function"
   type        = string
 }
+
+variable "ApiName" {
+  description = "Produced lambda api gateway"
+  type        = string
+}

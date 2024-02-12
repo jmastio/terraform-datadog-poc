@@ -16,4 +16,5 @@ module "datadog_resources" {
   datadog_api_key = var.datadog_api_key
   datadog_app_key = var.datadog_app_key
   lambda_function_name = module.aws_resources.lambda_function_name
+  ApiName = module.aws_resources.ApiName
 }
